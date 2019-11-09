@@ -29,13 +29,23 @@ func Setup() {
 		log.Fatalf("models.Setup err: %v", err)
 	}
 
+	// 表名
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
 		return setting.DatabaseSetting.TablePrefix + defaultTableName
 	}
 
+	db.SingularTable(true)
 }
 
 // CloseDB closes database connection (unnecessary)
 func CloseDB() {
 	defer db.Close()
+}
+
+// addExtraSpaceIfExist adds a separator
+func addExtreSpaceIfExist(str string) string {
+	if str != "" {
+		return " " + str
+	}
+	return ""
 }
