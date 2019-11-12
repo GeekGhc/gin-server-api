@@ -1,6 +1,15 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"gin-server-api/models"
+	"gin-server-api/pkg/setting"
+	"github.com/gin-gonic/gin"
+)
+
+func init(){
+	setting.Setup()
+	models.Setup()
+}
 
 func main(){
 	r := gin.Default()
