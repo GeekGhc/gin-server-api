@@ -61,6 +61,7 @@ var RedisSetting = &Redis{}
 
 var cfg *ini.File
 
+// init the configuration instance
 func Setup() {
 	var err error
 	cfg, err = ini.Load("conf/app.ini")
@@ -80,6 +81,7 @@ func Setup() {
 
 }
 
+// map section
 func mapTo(section string, v interface{}) {
 	err := cfg.Section(section).MapTo(v)
 	if err != nil {
