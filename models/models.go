@@ -17,7 +17,7 @@ type Model struct {
 	DeleteAt  int `json:"deleted_at"`
 }
 
-// initializes the database instance
+// init the database instance
 func Setup() {
 	var err error
 	db, err = gorm.Open(setting.DatabaseSetting.Type, fmt.Sprint("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
@@ -51,16 +51,16 @@ func CloseDB() {
 // updateTimeStampForCreateCallback will set `CreatedAt` ,`UpdatedAt` when creating
 func updateTimesStampForCreateCallback(scope *gorm.Scope){
 	if !scope.HasError(){
-		nowtime := time.Now().Unix()
+		nowTime := time.Now().Unix()
 		if createTimeField,ok := scope.FieldByName("CreatedAt");ok{
 			if createTimeField.IsBlank{
-				createTimeField.Set(nowtime)
+				createTimeField.Set(nowTime)
 			}
 		}
 
 		if updateTimeField,ok := scope.FieldByName("UpdatedAt");ok{
 			if updateTimeField.IsBlank{
-				updateTimeField.Set(nowtime)
+				updateTimeField.Set(nowTime)
 			}
 		}
 	}
@@ -82,14 +82,14 @@ func deleteCallback(scope *gorm.Scope){
 				scope.QuotedTableName(),
 				scope.Quote(deleteOnField.DBName),
 				scope.AddToVars(time.Now().Unix()),
-				addExtreSpaceIfExist(scope.CombinedConditionSql()),
-				addExtreSpaceIfExist(extraOption),
+				addExtraSpaceIfExist(scope.CombinedConditionSql()),
+				addExtraSpaceIfExist(extraOption),
 				)).Exec()
 		}else{
 			scope.Raw(fmt.Sprintf(
 				"DELETE FROM %v%v%v",
-				addExtreSpaceIfExist(scope.CombinedConditionSql()),
-				addExtreSpaceIfExist(extraOption),
+				addExtraSpaceIfExist(scope.CombinedConditionSql()),
+				addExtraSpaceIfExist(extraOption),
 				)).Exec()
 		}
 	}
@@ -103,7 +103,7 @@ func updateTimesStampForUpdateCallback(scope *gorm.Scope){
 }
 
 // addExtraSpaceIfExist adds a separator
-func addExtreSpaceIfExist(str string) string {
+func addExtraSpaceIfExist(str string) string {
 	if str != "" {
 		return " " + str
 	}
