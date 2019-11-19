@@ -2,13 +2,17 @@ package main
 
 import (
 	"gin-server-api/models"
+	"gin-server-api/pkg/logger"
 	"gin-server-api/pkg/setting"
+	"gin-server-api/pkg/util"
 	"github.com/gin-gonic/gin"
 )
 
 func init(){
 	setting.Setup()
 	models.Setup()
+	logger.Setup()
+	util.Setup()
 }
 
 func main(){
