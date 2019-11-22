@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gin-server-api/pkg/setting"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
 	"time"
 )
@@ -20,7 +21,7 @@ type Model struct {
 // init the database instance
 func Setup() {
 	var err error
-	db, err = gorm.Open(setting.DatabaseSetting.Type, fmt.Sprint("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+	db, err = gorm.Open(setting.DatabaseSetting.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		setting.DatabaseSetting.User,
 		setting.DatabaseSetting.Password,
 		setting.DatabaseSetting.Host,
@@ -36,9 +37,9 @@ func Setup() {
 	}
 
 	db.SingularTable(true)
-	db.Callback().Create().Replace("gorm:update_time_stamp",updateTimesStampForCreateCallback)
-	db.Callback().Update().Replace("gorm:update_time_stamp",updateTimesStampForUpdateCallback)
-	db.Callback().Delete().Replace("gorm:delete",deleteCallback)
+	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimesStampForCreateCallback)
+	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimesStampForUpdateCallback)
+	db.Callback().Delete().Replace("gorm:delete", deleteCallback)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
 }
@@ -49,17 +50,17 @@ func CloseDB() {
 }
 
 // updateTimeStampForCreateCallback will set `CreatedAt` ,`UpdatedAt` when creating
-func updateTimesStampForCreateCallback(scope *gorm.Scope){
-	if !scope.HasError(){
+func updateTimesStampForCreateCallback(scope *gorm.Scope) {
+	if !scope.HasError() {
 		nowTime := time.Now().Unix()
-		if createTimeField,ok := scope.FieldByName("CreatedAt");ok{
-			if createTimeField.IsBlank{
+		if createTimeField, ok := scope.FieldByName("CreatedAt"); ok {
+			if createTimeField.IsBlank {
 				createTimeField.Set(nowTime)
 			}
 		}
 
-		if updateTimeField,ok := scope.FieldByName("UpdatedAt");ok{
-			if updateTimeField.IsBlank{
+		if updateTimeField, ok := scope.FieldByName("UpdatedAt"); ok {
+			if updateTimeField.IsBlank {
 				updateTimeField.Set(nowTime)
 			}
 		}
@@ -67,16 +68,16 @@ func updateTimesStampForCreateCallback(scope *gorm.Scope){
 }
 
 // deleteCallback will set `DeletedAt` where deleting
-func deleteCallback(scope *gorm.Scope){
-	if !scope.HasError(){
+func deleteCallback(scope *gorm.Scope) {
+	if !scope.HasError() {
 		var extraOption string
-		if str,ok := scope.Get("gorm:delete_option");ok{
+		if str, ok := scope.Get("gorm:delete_option"); ok {
 			extraOption = fmt.Sprint(str)
 		}
 
-		deleteOnField,hasDeletedOnField := scope.FieldByName("DeleteAt")
+		deleteOnField, hasDeletedOnField := scope.FieldByName("DeleteAt")
 
-		if !scope.Search.Unscoped && hasDeletedOnField{
+		if !scope.Search.Unscoped && hasDeletedOnField {
 			scope.Raw(fmt.Sprintf(
 				"UPSATE %v SET %v%v%v%v",
 				scope.QuotedTableName(),
@@ -84,21 +85,21 @@ func deleteCallback(scope *gorm.Scope){
 				scope.AddToVars(time.Now().Unix()),
 				addExtraSpaceIfExist(scope.CombinedConditionSql()),
 				addExtraSpaceIfExist(extraOption),
-				)).Exec()
-		}else{
+			)).Exec()
+		} else {
 			scope.Raw(fmt.Sprintf(
 				"DELETE FROM %v%v%v",
 				addExtraSpaceIfExist(scope.CombinedConditionSql()),
 				addExtraSpaceIfExist(extraOption),
-				)).Exec()
+			)).Exec()
 		}
 	}
 }
 
 // updateTimeStampForUpdateCallback will set `UpdatedAt` when updating
-func updateTimesStampForUpdateCallback(scope *gorm.Scope){
-	if _,ok := scope.Get("gorm:uodate_columb");ok{
-		scope.SetColumn("UpdatedAt",time.Now().Unix())
+func updateTimesStampForUpdateCallback(scope *gorm.Scope) {
+	if _, ok := scope.Get("gorm:uodate_columb"); ok {
+		scope.SetColumn("UpdatedAt", time.Now().Unix())
 	}
 }
 
