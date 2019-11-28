@@ -17,6 +17,7 @@ func init() {
 }
 
 func main() {
+	gin.ForceConsoleColor()
 	router := gin.Default()
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -35,14 +36,28 @@ func main() {
 		c.String(http.StatusOK, message)
 	})
 	router.POST("/form_post", func(c *gin.Context) {
-		message := c.PostForm("message")
-		//nick := c.DefaultPostForm("nick", "anonymous")
+		message := c.Query("message")
+		nick := c.DefaultPostForm("nick", "anonymous")
 
 		c.JSON(200, gin.H{
 			"status":  "posted",
 			"message": message,
-			//"nick":    nick,
+			"nick":    nick,
 		})
 	})
-	router.Run() // listen and serve on 0.0.0.0:8080
+
+	router.GET("/json", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"html": "<b>Hello, world!</b>",
+		})
+	})
+
+	// Serves literal characters
+	router.GET("/purejson", func(c *gin.Context) {
+		c.PureJSON(200, gin.H{
+			"html": "<b>Hello, world!</b>",
+		})
+	})
+
+	_ = router.Run() // listen and serve on 0.0.0.0:8080
 }
