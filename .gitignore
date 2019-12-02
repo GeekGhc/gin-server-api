@@ -6,4 +6,5 @@ runtime/*
 !runtime/fonts
 
 vendor
+gin.log
 go.sum

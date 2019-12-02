@@ -6,7 +6,6 @@ import (
 	"gin-server-api/pkg/setting"
 	"gin-server-api/pkg/util"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func init() {
@@ -19,43 +18,10 @@ func init() {
 func main() {
 	gin.ForceConsoleColor()
 	router := gin.Default()
+
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
-		})
-	})
-	router.GET("/welcome", func(c *gin.Context) {
-		firstname := c.DefaultQuery("firstname", "Guest")
-		lastname := c.Query("lastname")
-		c.String(http.StatusOK, "Hello %s %s", firstname, lastname)
-	})
-	router.GET("/user/:name/*action", func(c *gin.Context) {
-		name := c.Param("name")
-		action := c.Param("action")
-		message := name + " is " + action
-		c.String(http.StatusOK, message)
-	})
-	router.POST("/form_post", func(c *gin.Context) {
-		message := c.Query("message")
-		nick := c.DefaultPostForm("nick", "anonymous")
-
-		c.JSON(200, gin.H{
-			"status":  "posted",
-			"message": message,
-			"nick":    nick,
-		})
-	})
-
-	router.GET("/json", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"html": "<b>Hello, world!</b>",
-		})
-	})
-
-	// Serves literal characters
-	router.GET("/purejson", func(c *gin.Context) {
-		c.PureJSON(200, gin.H{
-			"html": "<b>Hello, world!</b>",
 		})
 	})
 
