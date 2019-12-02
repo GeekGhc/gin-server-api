@@ -16,6 +16,8 @@ func init() {
 }
 
 func main() {
+	gin.SetMode(setting.ServerSetting.RunMode)
+
 	gin.ForceConsoleColor()
 	router := gin.Default()
 
