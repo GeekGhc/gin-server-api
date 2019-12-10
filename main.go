@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"time"
 )
 
 func init() {
@@ -23,21 +24,20 @@ func main() {
 
 	gin.ForceConsoleColor()
 
+	router := gin.Default()
 	readTimeout := setting.ServerSetting.ReadTimeout
 	writeTimeout := setting.ServerSetting.WriteTimeout
-	endPoint := fmt.Sprintf(":%d",setting.ServerSetting.HttpPort)
+	endPoint := fmt.Sprintf(":%d", setting.ServerSetting.HttpPort)
 	maxHeaderBytes := 1 << 20
 
 	server := &http.Server{
-		Addr:endPoint,
-		ReadTimeout:readTimeout,
-		WriteTimeout:writeTimeout,
-		MaxHeaderBytes:maxHeaderBytes,
+		Addr:           endPoint,
+		Handler:        router,
+		ReadTimeout:    readTimeout * time.Second,
+		WriteTimeout:   writeTimeout * time.Second,
+		MaxHeaderBytes: maxHeaderBytes,
 	}
-	log.Printf("[info] start http server listening %s",endPoint)
-	server.ListenAndServe()
-
-	router := gin.Default()
+	log.Printf("[info] start http server listening %s", endPoint)
 
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -45,5 +45,5 @@ func main() {
 		})
 	})
 
-	_ = router.Run() // listen and serve on 0.0.0.0:8080
+	server.ListenAndServe()
 }
