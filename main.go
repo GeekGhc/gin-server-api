@@ -6,6 +6,7 @@ import (
 	"gin-server-api/pkg/logger"
 	"gin-server-api/pkg/setting"
 	"gin-server-api/pkg/util"
+	"gin-server-api/routers"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -24,7 +25,7 @@ func main() {
 
 	gin.ForceConsoleColor()
 
-	router := gin.Default()
+	router := routers.InitRouter()
 	readTimeout := setting.ServerSetting.ReadTimeout
 	writeTimeout := setting.ServerSetting.WriteTimeout
 	endPoint := fmt.Sprintf(":%d", setting.ServerSetting.HttpPort)
