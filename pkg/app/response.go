@@ -15,12 +15,24 @@ type Response struct {
 	Data interface{} `json:"data"`
 }
 
+type Message struct {
+	Code int    `json:"code"`
+	Msg  string `json:"msg"`
+}
+
 // setting gin.JSON
 func (g *Gin) Response(httpCode, errCode int, data interface{}) {
-	g.C.JSON(httpCode, Response{
-		Code: errCode,
-		Msg:  e.GetMsg(errCode),
-		Data: data,
-	})
+	if data != nil {
+		g.C.JSON(httpCode, Response{
+			Code: errCode,
+			Msg:  e.GetMsg(errCode),
+			Data: data,
+		})
+	} else {
+		g.C.JSON(httpCode, Message{
+			Code: errCode,
+			Msg:  e.GetMsg(errCode),
+		})
+	}
 	return
 }
