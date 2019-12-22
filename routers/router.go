@@ -1,9 +1,9 @@
 package routers
 
 import (
+	"gin-server-api/controller"
+	v1 "gin-server-api/controller/v1"
 	"gin-server-api/middleware/jwt"
-	"gin-server-api/routers/api"
-	v1 "gin-server-api/routers/api/v1"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,7 +13,7 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	r.GET("auth", api.Auth)
+	r.GET("auth", controller.Auth)
 
 	apiV1 := r.Group("/api/v1")
 	apiV1.Use(jwt.JWT())

@@ -1,4 +1,4 @@
-package api
+package controller
 
 import (
 	"gin-server-api/pkg/app"
@@ -33,20 +33,20 @@ func Auth(c *gin.Context) {
 		return
 	}
 
-	authService := service.Auth{Username:username,Password:password}
-	isExist,err := authService.Check()
-	if err != nil{
-		appG.Response(http.StatusInternalServerError,e.ERROR_AUTH_CHECK_TOKEN_FAIL,nil)
+	authService := service.Auth{Username: username, Password: password}
+	isExist, err := authService.Check()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_AUTH_CHECK_TOKEN_FAIL, nil)
 		return
 	}
 
-	if !isExist{
-		appG.Response(http.StatusUnauthorized,e.ERROR_AUTH_TOKEN,nil)
+	if !isExist {
+		appG.Response(http.StatusUnauthorized, e.ERROR_AUTH_TOKEN, nil)
 		return
 	}
 
-	token,err := util.GenerateToken(username,password)
-	if err != nil{
+	token, err := util.GenerateToken(username, password)
+	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_AUTH_TOKEN, nil)
 		return
 	}
