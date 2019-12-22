@@ -12,7 +12,7 @@ import (
 var db *gorm.DB
 
 type Model struct {
-	ID        int `gorm:"primary_key" json:"id"`
+	ID        uint `gorm:"primary_key" json:"id"`
 	CreatedAt int `json:"created_at"`
 	UpdatedAt int `json:"updated_at"`
 	DeleteAt  int `json:"deleted_at"`

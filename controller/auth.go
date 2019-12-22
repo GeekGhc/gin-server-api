@@ -40,18 +40,18 @@ func Auth(c *gin.Context) {
 		return
 	}
 
+	//用户是否存在
 	if !isExist {
 		appG.Response(http.StatusUnauthorized, e.ERROR_AUTH_TOKEN, nil)
 		return
 	}
 
+	//生成token
 	token, err := util.GenerateToken(username, password)
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_AUTH_TOKEN, nil)
 		return
 	}
 
-	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
-		"token": token,
-	})
+	appG.Response(http.StatusOK, e.SUCCESS, token)
 }
