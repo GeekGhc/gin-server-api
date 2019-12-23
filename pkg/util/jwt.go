@@ -16,7 +16,7 @@ type Claims struct {
 
 type AuthToken struct {
 	Token     string `json:"token"`
-	ExpiresAt int64  `json:"expires_at"`
+	ExpiresAt string `json:"expires_at"`
 }
 
 // GenerateToken generate tokens used for auth
@@ -36,7 +36,7 @@ func GenerateToken(username, password string) (*AuthToken, error) {
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := tokenClaims.SignedString(jwtSecret)
 
-	authToken := &AuthToken{Token: token, ExpiresAt: expireTime.Unix()}
+	authToken := &AuthToken{Token: token, ExpiresAt: expireTime.Format("2006-01-02 15:04:05")}
 	return authToken, err
 }
 
