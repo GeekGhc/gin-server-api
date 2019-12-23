@@ -22,8 +22,9 @@ func InitRouter() *gin.Engine {
 		apiV1.GET("/users", v1.GetUsers)
 		//新建用户
 		apiV1.POST("/user", v1.CreateUser)
-		//删除用户
-		apiV1.DELETE("/users/:id", v1.DeleteUser)
+
+		//标签列表
+		apiV1.GET("/tags", v1.GetTags)
 	}
 	return r
 }
