@@ -25,6 +25,8 @@ func InitRouter() *gin.Engine {
 
 		//标签列表
 		apiV1.GET("/tags", v1.GetTags)
+		//新建标签
+		apiV1.POST("/tag",v1.AddTag)
 	}
 	return r
 }

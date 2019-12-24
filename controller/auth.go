@@ -4,7 +4,7 @@ import (
 	"gin-server-api/pkg/app"
 	"gin-server-api/pkg/e"
 	"gin-server-api/pkg/util"
-	"gin-server-api/service"
+	"gin-server-api/service/auth_service"
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -33,7 +33,7 @@ func Auth(c *gin.Context) {
 		return
 	}
 
-	authService := service.Auth{Username: username, Password: password}
+	authService := auth_service.Auth{Username: username, Password: password}
 	isExist, err := authService.Check()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_AUTH_CHECK_TOKEN_FAIL, nil)

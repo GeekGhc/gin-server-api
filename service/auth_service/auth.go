@@ -1,4 +1,4 @@
-package service
+package auth_service
 
 import "gin-server-api/models"
 
