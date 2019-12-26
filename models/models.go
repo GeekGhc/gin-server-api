@@ -15,7 +15,7 @@ type Model struct {
 	ID        uint `gorm:"primary_key" json:"id"`
 	CreatedAt int `json:"created_at"`
 	UpdatedAt int `json:"updated_at"`
-	DeleteAt  int `json:"deleted_at"`
+	DeletedAt  int `json:"deleted_at"`
 }
 
 // init the database instance
@@ -75,7 +75,7 @@ func deleteCallback(scope *gorm.Scope) {
 			extraOption = fmt.Sprint(str)
 		}
 
-		deleteOnField, hasDeletedOnField := scope.FieldByName("DeleteAt")
+		deleteOnField, hasDeletedOnField := scope.FieldByName("DeletedAt")
 
 		if !scope.Search.Unscoped && hasDeletedOnField {
 			scope.Raw(fmt.Sprintf(

@@ -10,6 +10,20 @@ type Tag struct {
 	Status     int    `json:"status"`
 }
 
+//校验标签名是否重复
+func ExistTagByName(name string) (bool, error) {
+	var tag Tag
+	err := db.Select("id").Where("name = ? and delete_at = ?", name, 0).First(&tag).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, nil
+	}
+	if tag.ID > 0 {
+		return true, nil
+	}
+
+	return false, nil
+}
+
 //创建标签
 func AddTag(name string, status int, createdBy string) error {
 	tag := Tag{
