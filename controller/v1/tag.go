@@ -18,6 +18,7 @@ func GetTags(c *gin.Context) {
 
 }
 
+//添加标签
 func AddTag(c *gin.Context) {
 	var (
 		appG = app.Gin{C: c}
@@ -34,17 +35,21 @@ func AddTag(c *gin.Context) {
 		CreatedBy: form.CreatedBy,
 		Status:    form.Status,
 	}
-	exist,err := tagService.ExistByName()
-	if err != nil{
+	exist, err := tagService.ExistByName()
+	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_EXIST_TAG_FAIL, nil)
 		return
 	}
-
 	//已经存在该标签
-	if exist{
+	if exist {
 		appG.Response(http.StatusOK, e.ERROR_EXIST_TAG, nil)
 		return
 	}
 
+	err = tagService.Add()
+	if err != nil {
+		appG.Response(http.StatusInternalServerError, e.ERROR_ADD_TAG_FAIL, nil)
+	}
 
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
