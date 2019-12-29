@@ -5,8 +5,8 @@ import "gin-server-api/models"
 type Tag struct {
 	ID        int
 	Name      string
-	CreatedBy string
-	UpdatedBy string
+	CreatedBy int
+	UpdatedBy int
 	Status    int
 
 	PageNo   int

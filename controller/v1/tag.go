@@ -10,7 +10,7 @@ import (
 
 type TagForm struct {
 	Name      string `form:"name" valid:"Required;MaxSize(100)"`
-	CreatedBy string `form:"createdBy" valid:"Required;MaxSize(100)"`
+	CreatedBy int    `form:"createdBy" valid:"Required"`
 	Status    int    `form:"status" valid:"Range(0,1)"`
 }
 
@@ -49,6 +49,7 @@ func AddTag(c *gin.Context) {
 	err = tagService.Add()
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_ADD_TAG_FAIL, nil)
+		return
 	}
 
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
