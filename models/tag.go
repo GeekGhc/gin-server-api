@@ -15,7 +15,7 @@ type Tag struct {
 //校验标签名是否重复
 func ExistTagByName(name string) (bool, error) {
 	var tag Tag
-	err := db.Select("id").Where("name = ? and deleted_at = ?", name, 0).First(&tag).Error
+	err := db.Select("id").Where("name = ?", name).First(&tag).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return false, nil
 	}

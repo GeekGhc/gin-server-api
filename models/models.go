@@ -13,9 +13,9 @@ var db *gorm.DB
 
 type Model struct {
 	ID        uint `gorm:"primary_key" json:"id"`
-	CreatedAt int `json:"created_at"`
-	UpdatedAt int `json:"updated_at"`
-	DeletedAt  int `json:"deleted_at"`
+	CreatedAt int  `json:"created_at"`
+	UpdatedAt int  `json:"updated_at"`
+	DeletedAt int  `gorm:"default:null",json:"deleted_at"`
 }
 
 // init the database instance
@@ -36,6 +36,7 @@ func Setup() {
 		return setting.DatabaseSetting.TablePrefix + defaultTableName
 	}
 
+	db.LogMode(true)
 	db.SingularTable(true)
 	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimesStampForCreateCallback)
 	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimesStampForUpdateCallback)
