@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gin-server-api/models"
+	"gin-server-api/pkg/gredis"
 	"gin-server-api/pkg/logger"
 	"gin-server-api/pkg/setting"
 	"gin-server-api/pkg/util"
@@ -17,6 +18,7 @@ func init() {
 	setting.Setup()
 	models.Setup()
 	logger.Setup()
+	gredis.Setup()
 	util.Setup()
 }
 
