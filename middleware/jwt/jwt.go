@@ -11,11 +11,10 @@ import (
 // JWT is jwt middleware
 func JWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var code int
+		var code = e.SUCCESS
 		var data interface{}
 
-		code = e.SUCCESS
-		token := c.Query("token")
+		token := c.GetHeader("token")
 		if token == "" {
 			code = e.INVALID_PARAMS
 		} else {

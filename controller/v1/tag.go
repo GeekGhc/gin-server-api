@@ -46,11 +46,11 @@ func AddTag(c *gin.Context) {
 		return
 	}
 
-	err = tagService.Add()
-	if err != nil {
-		appG.Response(http.StatusInternalServerError, e.ERROR_ADD_TAG_FAIL, nil)
-		return
-	}
+	//err = tagService.Add()
+	//if err != nil {
+	//	appG.Response(http.StatusInternalServerError, e.ERROR_ADD_TAG_FAIL, nil)
+	//	return
+	//}
 
 	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }
