@@ -12,5 +12,6 @@ require (
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/unknwon/com v1.0.1
+	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
 	gopkg.in/ini.v1 v1.49.0 // indirect
 )

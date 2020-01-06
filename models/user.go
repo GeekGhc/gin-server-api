@@ -1,6 +1,9 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
+)
 
 type User struct {
 	Model
@@ -12,8 +15,13 @@ type User struct {
 // check auth if authentication information exist
 func CheckAuth(username, password string) (bool, error) {
 	var user User
-	err := db.Select("id").Where(User{Username: username, Password: password}).First(&user).Error
+	err := db.Where("username = ?", username).First(&user).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
+	}
+	//密码校验
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
 		return false, err
 	}
 
