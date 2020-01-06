@@ -8,6 +8,8 @@ import (
 	"net/http"
 )
 
+const AuthUser = "authUser"
+
 // JWT is jwt middleware
 func JWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -19,7 +21,7 @@ func JWT() gin.HandlerFunc {
 			code = e.INVALID_PARAMS
 		} else {
 			//验证token
-			_, err := util.ParseToken(token)
+			user, err := util.ParseToken(token)
 			if err != nil {
 				switch err.(*jwt.ValidationError).Errors {
 				case jwt.ValidationErrorExpired:
@@ -28,6 +30,8 @@ func JWT() gin.HandlerFunc {
 					code = e.ERROR_AUTH_CHECK_TOKEN_FAIL
 				}
 			}
+
+			c.Set(AuthUser, user)
 		}
 
 		if code != e.SUCCESS {

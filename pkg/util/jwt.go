@@ -9,12 +9,6 @@ import (
 
 var jwtSecret []byte
 
-type Claims struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	jwt.StandardClaims
-}
-
 type AuthToken struct {
 	Token     string `json:"token"`
 	ExpiresAt string `json:"expires_at"`
@@ -47,15 +41,14 @@ func GenerateToken(m *models.User) (*AuthToken, error) {
 }
 
 // ParseToken parsing token
-func ParseToken(token string) (*Claims, error) {
-	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+func ParseToken(token string) (*models.User, error) {
+	claims := userStdClaims{}
+	tokenClaims, err := jwt.ParseWithClaims(token, &claims, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
 
-	if tokenClaims != nil {
-		if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {
-			return claims, nil
-		}
+	if tokenClaims != nil && tokenClaims.Valid {
+		return claims.User, nil
 	}
 
 	return nil, err
