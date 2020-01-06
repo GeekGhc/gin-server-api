@@ -13,21 +13,21 @@ type User struct {
 }
 
 // check auth if authentication information exist
-func CheckAuth(username, password string) (bool, error) {
+func CheckAuth(username, password string) (*User, error) {
 	var user User
 	err := db.Where("username = ?", username).First(&user).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return false, err
+		return nil, err
 	}
 	//密码校验
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 
 	if user.ID > 0 {
-		return true, nil
+		return &user, nil
 	}
 
-	return false, nil
+	return nil, nil
 }

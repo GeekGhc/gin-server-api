@@ -8,6 +8,6 @@ type Auth struct {
 }
 
 //用户是否登录
-func (a *Auth) Check() (bool, error) {
+func (a *Auth) Check() (*models.User, error) {
 	return models.CheckAuth(a.Username, a.Password)
 }

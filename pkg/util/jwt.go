@@ -1,6 +1,7 @@
 package util
 
 import (
+	"gin-server-api/models"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -19,16 +20,21 @@ type AuthToken struct {
 	ExpiresAt string `json:"expires_at"`
 }
 
+type userStdClaims struct {
+	jwt.StandardClaims
+	*models.User
+}
+
 // GenerateToken generate tokens used for auth
-func GenerateToken(username, password string) (*AuthToken, error) {
+func GenerateToken(m *models.User) (*AuthToken, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(24 * time.Hour)
 
-	claims := Claims{
-		EncodeMD5(username),
-		EncodeMD5(password),
-		jwt.StandardClaims{
+	claims := userStdClaims{
+		User: m,
+		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
+			IssuedAt:  time.Now().Unix(),
 			Issuer:    "gin-server-api",
 		},
 	}
