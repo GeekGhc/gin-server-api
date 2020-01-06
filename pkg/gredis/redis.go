@@ -37,7 +37,7 @@ func Setup() error {
 	return nil
 }
 
-func Set(key string, data interface{}, time int) error {
+func Set(key string, data interface{}) error {
 	conn := RedisConn.Get()
 	defer conn.Close()
 
@@ -50,8 +50,16 @@ func Set(key string, data interface{}, time int) error {
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func Expire(key string, time int) error {
+	conn := RedisConn.Get()
+	defer conn.Close()
+
 	//过期时间
-	_, err = conn.Do("EXPIRE", key, time)
+	_, err := conn.Do("EXPIRE", key, time)
 	if err != nil {
 		return err
 	}
