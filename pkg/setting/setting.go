@@ -59,6 +59,13 @@ type Redis struct {
 
 var RedisSetting = &Redis{}
 
+type Kafka struct {
+	Host         []string
+	DefaultTopic string
+}
+
+var KafkaSetting = &Kafka{}
+
 var cfg *ini.File
 
 // init the configuration instance
@@ -73,6 +80,7 @@ func Setup() {
 	mapTo("server", ServerSetting)
 	mapTo("database", DatabaseSetting)
 	mapTo("redis", RedisSetting)
+	mapTo("kafka", KafkaSetting)
 
 	AppSetting.ImageMaxSize = AppSetting.ImageMaxSize * 1024 * 1024
 	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
