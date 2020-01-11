@@ -5,10 +5,40 @@ import (
 	"gin-server-api/pkg/setting"
 	"github.com/Shopify/sarama"
 	"log"
+	"strings"
 	"time"
 )
 
-func Producer() {
+//同步生产者
+func SyncProducer() {
+	config := sarama.NewConfig()
+
+	config.Producer.Return.Successes = true
+	config.Producer.Timeout = 5 * time.Second
+
+	p, err := sarama.NewSyncProducer(strings.Split("127.0.0.1:9092", ","), config)
+	defer p.Close()
+
+	if err != nil {
+		return
+	}
+
+	timeData := time.Now()
+	value := "this is a message " + timeData.Format("15:04:05")
+	defaultTopic := setting.KafkaSetting.DefaultTopic
+	msg := &sarama.ProducerMessage{
+		Topic: defaultTopic,
+	}
+	msg.Value = sarama.ByteEncoder(value)
+
+	if _, _, err := p.SendMessage(msg); err != nil {
+		log.Fatal(err)
+		return
+	}
+}
+
+//异步生产者
+func AsyncProducer() {
 	config := sarama.NewConfig()
 	//等待服务器所有副本都保存成功后的响应
 	config.Producer.RequiredAcks = sarama.WaitForAll
