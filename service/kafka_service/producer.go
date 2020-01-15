@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+var host = setting.KafkaSetting.Host
+
 //同步生产者
 func SyncProducer() {
 	config := sarama.NewConfig()
@@ -16,7 +18,7 @@ func SyncProducer() {
 	config.Producer.Return.Successes = true
 	config.Producer.Timeout = 5 * time.Second
 
-	p, err := sarama.NewSyncProducer(strings.Split("127.0.0.1:9092", ","), config)
+	p, err := sarama.NewSyncProducer(strings.Split(host, ","), config)
 	defer p.Close()
 
 	if err != nil {
@@ -49,7 +51,7 @@ func AsyncProducer() {
 	config.Producer.Return.Errors = true
 
 	//使用配置 新建一个异步的生产者
-	producer, e := sarama.NewAsyncProducer([]string{"127.0.0.1:9092"}, config)
+	producer, e := sarama.NewAsyncProducer(strings.Split(host, ","), config)
 	if e != nil {
 		return
 	}

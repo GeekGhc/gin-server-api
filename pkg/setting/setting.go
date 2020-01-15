@@ -60,7 +60,7 @@ type Redis struct {
 var RedisSetting = &Redis{}
 
 type Kafka struct {
-	Host         []string
+	Host         string
 	DefaultTopic string
 }
 
