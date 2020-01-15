@@ -13,5 +13,10 @@ require (
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/unknwon/com v1.0.1
 	golang.org/x/crypto v0.0.0-20190404164418-38d8ce5564a5
+	golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa // indirect
+	golang.org/x/sys v0.0.0-20200113162924-86b910548bc1 // indirect
+	golang.org/x/text v0.3.2 // indirect
+	google.golang.org/genproto v0.0.0-20200113173426-e1de0a7b01eb // indirect
+	google.golang.org/grpc v1.26.0 // indirect
 	gopkg.in/ini.v1 v1.49.0 // indirect
 )

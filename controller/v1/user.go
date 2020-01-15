@@ -25,6 +25,8 @@ func GetUsers(c *gin.Context) {
 		fmt.Println(user)
 	}
 
+	//kafka_service.SyncProducer()
+
 	token := "users"
 	appG.Response(http.StatusOK, e.SUCCESS, token)
 }
