@@ -22,7 +22,7 @@ func SyncProducer() {
 	defer p.Close()
 
 	if err != nil {
-		return
+		panic(err)
 	}
 
 	timeData := time.Now()
@@ -31,6 +31,7 @@ func SyncProducer() {
 	msg := &sarama.ProducerMessage{
 		Topic: defaultTopic,
 	}
+	//字符串转成字节数组
 	msg.Value = sarama.ByteEncoder(value)
 
 	if _, _, err := p.SendMessage(msg); err != nil {
