@@ -2,57 +2,52 @@ package kafka_service
 
 import (
 	"fmt"
-	"gin-server-api/pkg/setting"
 	"github.com/Shopify/sarama"
 	"log"
-	"strings"
 	"time"
 )
 
-var host = setting.KafkaSetting.Host
-
 //同步生产者
-func SyncProducer() {
-	config := sarama.NewConfig()
+func (k *Kafka) SyncProducer(message string) {
+	k.Config.Producer.Return.Successes = true
+	k.Config.Producer.Timeout = 5 * time.Second
 
-	config.Producer.Return.Successes = true
-	config.Producer.Timeout = 5 * time.Second
+	producer, err := sarama.NewSyncProducer(k.host, k.Config)
 
-	p, err := sarama.NewSyncProducer(strings.Split(host, ","), config)
-	defer p.Close()
+	defer func() {
+		if err := producer.Close(); err != nil {
+			log.Fatalln(err)
+		}
+	}()
 
 	if err != nil {
 		panic(err)
 	}
 
-	timeData := time.Now()
-	value := "this is a message " + timeData.Format("15:04:05")
-	defaultTopic := setting.KafkaSetting.DefaultTopic
 	msg := &sarama.ProducerMessage{
-		Topic: defaultTopic,
+		Topic: k.topic,
 	}
 	//字符串转成字节数组
-	msg.Value = sarama.ByteEncoder(value)
+	msg.Value = sarama.ByteEncoder(message)
 
-	if _, _, err := p.SendMessage(msg); err != nil {
+	if _, _, err := producer.SendMessage(msg); err != nil {
 		log.Fatal(err)
 		return
 	}
 }
 
 //异步生产者
-func AsyncProducer() {
-	config := sarama.NewConfig()
+func (k *Kafka) AsyncProducer(message string) {
 	//等待服务器所有副本都保存成功后的响应
-	config.Producer.RequiredAcks = sarama.WaitForAll
+	k.Config.Producer.RequiredAcks = sarama.WaitForAll
 	//随机向partition发送消息
-	config.Producer.Partitioner = sarama.NewRandomPartitioner
+	k.Config.Producer.Partitioner = sarama.NewRandomPartitioner
 	//是否等待成功和失败后的响应,只有上面的RequireAcks设置不是NoReponse这里才有用
-	config.Producer.Return.Successes = true
-	config.Producer.Return.Errors = true
+	k.Config.Producer.Return.Successes = true
+	k.Config.Producer.Return.Errors = true
 
 	//使用配置 新建一个异步的生产者
-	producer, e := sarama.NewAsyncProducer(strings.Split(host, ","), config)
+	producer, e := sarama.NewAsyncProducer(k.host, k.Config)
 	if e != nil {
 		return
 	}
@@ -70,22 +65,15 @@ func AsyncProducer() {
 		}
 	}(producer)
 
-	defaultTopic := setting.KafkaSetting.DefaultTopic
 	for i := 0; ; i++ {
 		time.Sleep(500 * time.Millisecond)
-		timeData := time.Now()
-		value := "this is a message " + timeData.Format("15:04:05")
-
 		//发动主题消息
 		msg := &sarama.ProducerMessage{
-			Topic: defaultTopic,
+			Topic: k.topic,
 		}
-
 		//字符串转换成字节数组
-		msg.Value = sarama.ByteEncoder(value)
-
+		msg.Value = sarama.ByteEncoder(message)
 		//使用通道发送
 		producer.Input() <- msg
 	}
-
 }

@@ -3,7 +3,7 @@ package v1
 import (
 	"gin-server-api/pkg/app"
 	"gin-server-api/pkg/e"
-	"gin-server-api/service/kafka_service"
+	. "gin-server-api/service/kafka_service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -23,7 +23,7 @@ func GetUsers(c *gin.Context) {
 	//	fmt.Println(user)
 	//}
 
-	kafka_service.SyncProducer()
+	KafkaService.SyncProducer("test message111")
 
 	token := "users"
 	appG.Response(http.StatusOK, e.SUCCESS, token)

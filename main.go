@@ -8,6 +8,7 @@ import (
 	"gin-server-api/pkg/setting"
 	"gin-server-api/pkg/util"
 	"gin-server-api/routers"
+	"gin-server-api/service/kafka_service"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -20,6 +21,7 @@ func init() {
 	logger.Setup()
 	gredis.Setup()
 	util.Setup()
+	kafka_service.SetUp()
 }
 
 func main() {
