@@ -13,7 +13,6 @@ func (k *Kafka) SyncProducer(message string) {
 	k.Config.Producer.Timeout = 5 * time.Second
 
 	producer, err := sarama.NewSyncProducer(k.host, k.Config)
-
 	defer func() {
 		if err := producer.Close(); err != nil {
 			log.Fatalln(err)

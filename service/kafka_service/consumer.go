@@ -2,8 +2,8 @@ package kafka_service
 
 import (
 	"fmt"
-	"gin-server-api/pkg/setting"
 	"github.com/Shopify/sarama"
+	"log"
 	"sync"
 )
 
@@ -11,22 +11,27 @@ var (
 	wg sync.WaitGroup
 )
 
-func Consumer() {
-	consumer, err := sarama.NewConsumer([]string{"127.0.0.1:9092"}, nil)
+func (k *Kafka) Consumer() {
+	consumer, err := sarama.NewConsumer(k.host, nil)
+	defer func() {
+		if err := consumer.Close(); err != nil {
+			log.Fatalln(err)
+		}
+	}()
+
 	if err != nil {
 		return
 	}
 
-	defaultTopic := setting.KafkaSetting.DefaultTopic
 	//返回主题的所有分区
-	partitionList, err := consumer.Partitions(defaultTopic)
+	partitionList, err := consumer.Partitions(k.topic)
 	if err != nil {
 		panic(err)
 	}
 
 	for partition := range partitionList {
 		//ConsumePartition方法根据主题，分区和给定的偏移量创建创建了相应的分区消费者
-		pc, err := consumer.ConsumePartition(defaultTopic, int32(partition), sarama.OffsetNewest)
+		pc, err := consumer.ConsumePartition(k.topic, int32(partition), sarama.OffsetNewest)
 		if err != nil {
 			panic(err)
 		}
@@ -41,5 +46,4 @@ func Consumer() {
 		}(pc)
 	}
 	wg.Wait()
-	consumer.Close()
 }
