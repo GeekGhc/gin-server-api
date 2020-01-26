@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"github.com/Shopify/sarama"
 	"log"
+	"os"
+	"os/signal"
+	"sync"
 	"time"
 )
 
@@ -40,39 +43,56 @@ func (k *Kafka) AsyncProducer(message string) {
 	//等待服务器所有副本都保存成功后的响应
 	k.Config.Producer.RequiredAcks = sarama.WaitForAll
 	//随机向partition发送消息
-	k.Config.Producer.Partitioner = sarama.NewRandomPartitioner
+	//k.Config.Producer.Partitioner = sarama.NewRandomPartitioner
 	//是否等待成功和失败后的响应,只有上面的RequireAcks设置不是NoReponse这里才有用
 	k.Config.Producer.Return.Successes = true
 	k.Config.Producer.Return.Errors = true
 
 	//使用配置 新建一个异步的生产者
-	producer, e := sarama.NewAsyncProducer(k.host, k.Config)
-	if e != nil {
-		return
+	producer, err := sarama.NewAsyncProducer(k.host, k.Config)
+	if err != nil {
+		panic(err)
 	}
-	defer producer.AsyncClose()
 
-	//判断哪个通道发送的消息
-	go func(p sarama.AsyncProducer) {
-		for {
-			select {
-			case suc := <-p.Successes():
-				fmt.Println("offset: ", suc.Offset, "timestamp: ", suc.Timestamp.String(), "partitions: ", suc.Partition)
-			case fail := <-p.Errors():
-				log.Fatal(fail.Err)
-			}
-		}
-	}(producer)
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, os.Interrupt)
 
-	for i := 0; ; i++ {
-		time.Sleep(500 * time.Millisecond)
-		//发动主题消息
-		msg := &sarama.ProducerMessage{
-			Topic: k.topic,
+	var (
+		wg                          sync.WaitGroup
+		enqueued, successes, errors int
+	)
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for v := range producer.Successes() {
+			fmt.Println(v)
+			successes++
 		}
-		//字符串转换成字节数组
-		msg.Value = sarama.ByteEncoder(message)
-		//使用通道发送
-		producer.Input() <- msg
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for err := range producer.Errors() {
+			log.Println(err)
+			errors++
+		}
+	}()
+
+ProducerLoop:
+	for {
+		message := &sarama.ProducerMessage{Topic: k.topic, Value: sarama.ByteEncoder(message)}
+		select {
+		case producer.Input() <- message:
+			enqueued++
+
+		case <-signals:
+			producer.AsyncClose() // Trigger a shutdown of the producer.
+			break ProducerLoop
+		}
 	}
+
+	wg.Wait()
+	fmt.Printf("Successfully produced: %d; errors: %d\n", successes, errors)
 }
