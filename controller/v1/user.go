@@ -22,7 +22,7 @@ func GetUsers(c *gin.Context) {
 	//if ok{
 	//	fmt.Println(user)
 	//}
-	
+
 	KafkaService.AsyncProducer("ghc")
 
 	token := "users"
