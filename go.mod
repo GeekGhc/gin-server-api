@@ -8,6 +8,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.4.0
 	github.com/go-ini/ini v1.49.0
+	github.com/golang/protobuf v1.3.2
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/jinzhu/gorm v1.9.11
 	github.com/smartystreets/goconvey v1.6.4 // indirect
@@ -17,6 +18,6 @@ require (
 	golang.org/x/sys v0.0.0-20200113162924-86b910548bc1 // indirect
 	golang.org/x/text v0.3.2 // indirect
 	google.golang.org/genproto v0.0.0-20200113173426-e1de0a7b01eb // indirect
-	google.golang.org/grpc v1.26.0 // indirect
+	google.golang.org/grpc v1.26.0
 	gopkg.in/ini.v1 v1.49.0 // indirect
 )
