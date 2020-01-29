@@ -10,13 +10,13 @@ import (
 )
 
 const (
-	port = ":50051"
+	Address = "0.0.0.0:9090"
 )
 
 type server struct{}
 
 func (s *server) SayHello(ctx context.Context, in *helloworld.HelloRequest) (*helloworld.HelloResponse, error) {
-	return &helloworld.HelloResponse{Message: fmt.Sprintln("%s", in.Name)}, nil
+	return &helloworld.HelloResponse{Message: fmt.Sprintf("Hello %s", in.Name)}, nil
 }
 
 func (s *server) LotsOfReplies(in *helloworld.HelloRequest, stream helloworld.HelloWorld_LotsOfRepliesServer) error {
@@ -27,13 +27,16 @@ func (s *server) LotsOfReplies(in *helloworld.HelloRequest, stream helloworld.He
 }
 
 func main() {
-	listen, err := net.Listen("tcp", port)
+	listen, err := net.Listen("tcp", Address)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
 	s := grpc.NewServer()
+	//服务注册
 	helloworld.RegisterHelloWorldServer(s, &server{})
-	s.Serve(listen)
+	if err := s.Serve(listen); err != nil {
+		log.Fatalf("failed to server: %v", err)
+	}
 
 }
