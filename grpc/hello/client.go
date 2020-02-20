@@ -12,7 +12,6 @@ const (
 	ClientAddress = "0.0.0.0:9090"
 )
 
-
 func main() {
 	conn, err := grpc.Dial(ClientAddress, grpc.WithInsecure())
 	if err != nil {
