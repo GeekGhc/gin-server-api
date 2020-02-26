@@ -1,19 +1,32 @@
 syntax="proto3";//指定proto版本
+import public "google/protobuf/timestamp.proto";
 
 package user; //指定包名
 
 service UserService{
     //注册用户
-    rpc Register(RegisterRequest) returns (RegisterResponse){}
+    rpc Register(RegisterUserRequest) returns (RegisterUserResponse){}
 }
 
-message RegisterRequest{
+message User{
+    string username = 1;
+    string email = 2;
+    string password = 3;
+    google.protobuf.Timestamp created_at = 4;
+}
+
+message RegisterUserRequest{
     string username = 1;
     string email = 2;
     string password = 3;
 }
 
-message RegisterResponse{
+message RegisterUserResponse{
     string username = 1;
     string email = 2;
+    google.protobuf.Timestamp created_at = 3;
+}
+
+message UserList{
+    repeated User user = 1;
 }
