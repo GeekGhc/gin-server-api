@@ -1,0 +1,19 @@
+syntax="proto3";//指定proto版本
+
+package user; //指定包名
+
+service UserService{
+    //注册用户
+    rpc Register(RegisterRequest) returns (RegisterResponse){}
+}
+
+message RegisterRequest{
+    string username = 1;
+    string email = 2;
+    string password = 3;
+}
+
+message RegisterResponse{
+    string username = 1;
+    string email = 2;
+}
