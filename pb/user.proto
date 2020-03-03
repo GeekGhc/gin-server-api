@@ -1,13 +1,16 @@
 syntax="proto3";//指定proto版本
 import public "google/protobuf/timestamp.proto";
+import public "google/protobuf/empty.proto";
 
 package user; //指定包名
 
 service UserService{
     //注册用户
-    rpc Register(RegisterUserRequest) returns (RegisterUserResponse){}
-    //用户列表(服务端推送流)
-    rpc UserListStream(UserStreamRequest) returns (UserStreamResponse){}
+    rpc Register(RegisterUserRequest) returns (UserResponse){}
+    //用户列表(无参数)
+    rpc UserList(google.protobuf.Empty) returns (UserListResponse){}
+    //用户流(服务端推送流)
+    rpc UserListStream(UserStreamRequest) returns (UserResponse){}
 }
 
 message User{
@@ -20,15 +23,14 @@ message RegisterUserRequest{
     string email = 2;
     string password = 3;
 }
-message RegisterUserResponse{
+message UserResponse{
     string username = 1;
     string email = 2;
     google.protobuf.Timestamp created_at = 3;
 }
-
 message UserStreamRequest{
     string username = 1;
 }
-message UserStreamResponse{
+message UserListResponse{
     repeated User user = 1;
 }
