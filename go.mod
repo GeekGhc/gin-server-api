@@ -11,6 +11,7 @@ require (
 	github.com/golang/protobuf v1.3.2
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/jinzhu/gorm v1.9.11
+	github.com/klauspost/cpuid v1.2.3 // indirect
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/unknwon/com v1.0.1
 	golang.org/x/crypto v0.0.0-20190404164418-38d8ce5564a5

@@ -6,27 +6,29 @@ package user; //指定包名
 service UserService{
     //注册用户
     rpc Register(RegisterUserRequest) returns (RegisterUserResponse){}
+    //用户列表(服务端推送流)
+    rpc UserListStream(UserStreamRequest) returns (UserStreamResponse){}
 }
 
 message User{
     string username = 1;
     string email = 2;
-    string password = 3;
     google.protobuf.Timestamp created_at = 4;
 }
-
 message RegisterUserRequest{
     string username = 1;
     string email = 2;
     string password = 3;
 }
-
 message RegisterUserResponse{
     string username = 1;
     string email = 2;
     google.protobuf.Timestamp created_at = 3;
 }
 
-message UserList{
+message UserStreamRequest{
+    string username = 1;
+}
+message UserStreamResponse{
     repeated User user = 1;
 }
