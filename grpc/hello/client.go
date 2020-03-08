@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"gin-server-api/pb"
+	"gin-server-api/pb/helloworld"
 	"google.golang.org/grpc"
 	"io"
 	"log"

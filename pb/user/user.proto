@@ -10,13 +10,13 @@ service UserService{
     //用户列表(无参数)
     rpc UserList(google.protobuf.Empty) returns (UserListResponse){}
     //用户流(服务端推送流)
-    rpc UserListStream(UserStreamRequest) returns (UserResponse){}
+    rpc UserListStream(UserStreamRequest) returns (stream UserResponse){}
 }
 
 message User{
     string username = 1;
     string email = 2;
-    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp created_at = 3;
 }
 message RegisterUserRequest{
     string username = 1;

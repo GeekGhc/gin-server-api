@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"gin-server-api/pb"
+	"gin-server-api/pb/helloworld"
 	"google.golang.org/grpc"
 	"log"
 	"net"
