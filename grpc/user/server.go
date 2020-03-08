@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"gin-server-api/pb/user"
 	"github.com/golang/protobuf/ptypes/timestamp"
 	"google.golang.org/grpc"
@@ -45,16 +46,19 @@ func (server *server) UserList(ctx context.Context, empty *user.Empty) (*user.Us
 }
 
 //用户流
-func (server *server) UserListStream(ctx context.Context, stream *user.UserStreamRequest) (*user.UserResponse, error) {
+func (server *server) UserListStream(req *user.UserStreamRequest, stream user.UserService_UserListStreamServer) error {
 	createdAt := &timestamp.Timestamp{
 		Seconds: time.Now().Unix(),
 		Nanos:   0,
 	}
-	return &user.UserResponse{
-		Username:  "name2",
-		Email:     "email2",
-		CreatedAt: createdAt,
-	}, nil
+	for i := 0; i < 10; i++ {
+		stream.Send(&user.UserResponse{
+			Username:  fmt.Sprintf("name %s", i),
+			Email:     fmt.Sprintf("email %s ", i),
+			CreatedAt: createdAt,
+		})
+	}
+	return nil
 }
 
 func main() {

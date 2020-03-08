@@ -1,6 +1,6 @@
 syntax="proto3";//指定proto版本
 
-package helloword; //指定包名
+package helloworld; //指定包名
 
 //定义Hello服务
 service HelloWorld{
