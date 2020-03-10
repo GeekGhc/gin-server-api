@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-const PORT = ":50051"
+const PORT = "0.0.0.0:50051"
 
 type server struct{}
 
@@ -23,8 +23,8 @@ func (server *server) Register(ctx context.Context, req *user.RegisterUserReques
 		Nanos:   0,
 	}
 	return &user.UserResponse{
-		Username:  "fff",
-		Email:     "aaa",
+		Username:  req.Username,
+		Email:     req.Email,
 		CreatedAt: createdAt,
 	}, nil
 }
@@ -53,8 +53,8 @@ func (server *server) UserListStream(req *user.UserStreamRequest, stream user.Us
 	}
 	for i := 0; i < 10; i++ {
 		stream.Send(&user.UserResponse{
-			Username:  fmt.Sprintf("name %s", i),
-			Email:     fmt.Sprintf("email %s ", i),
+			Username:  fmt.Sprintf("name %d", i),
+			Email:     fmt.Sprintf("email %d", i),
 			CreatedAt: createdAt,
 		})
 	}
