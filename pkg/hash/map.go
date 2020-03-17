@@ -27,10 +27,10 @@ func (m *Map) Put(k int, v int) {
 		return
 	}
 	//遍历是否有相同k
-	for x := m.slot[p].Front(); x != nil; x = x.Next() {
+	for e := m.slot[p].Front(); e != nil; e = e.Next() {
 		//替换节点
-		if x.Value.(KV).k == k {
-			x.Value = KV{k, v}
+		if e.Value.(KV).k == k {
+			e.Value = KV{k, v}
 			return
 		}
 	}
@@ -42,9 +42,9 @@ func (m *Map) Get(k int) int {
 	if m.slot[p] == nil {
 		return -1
 	}
-	for x := m.slot[p].Front(); x != nil; x = x.Next() {
-		if k == x.Value.(KV).k {
-			return x.Value.(KV).v
+	for e := m.slot[p].Front(); e != nil; e = e.Next() {
+		if k == e.Value.(KV).k {
+			return e.Value.(KV).v
 		}
 	}
 	return -1
@@ -55,9 +55,9 @@ func (m *Map) Remove(k int) {
 	if m.slot[p] == nil {
 		return
 	}
-	for x := m.slot[p].Front(); x != nil; x = x.Next() {
-		if x.Value.(KV).k == k {
-			m.slot[p].Remove(x)
+	for e := m.slot[p].Front(); e != nil; e = e.Next() {
+		if e.Value.(KV).k == k {
+			m.slot[p].Remove(e)
 			return
 		}
 	}
