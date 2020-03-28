@@ -29,6 +29,11 @@ var gEnvironment = DevEnvironment
 // ----------------------------------------
 var gEnvironmentWriteMutex = &sync.Mutex{}
 
+// 获取全局的运行环境
+func GetEnv() Environment{
+	return gEnvironment
+}
+
 //设置全局的运行环境
 func SetEnv(env Environment) error {
 	gEnvironmentWriteMutex.Lock()

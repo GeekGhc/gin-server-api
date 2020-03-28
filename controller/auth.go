@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"gin-server-api/pkg/app"
+	"gin-server-api/app"
 	"gin-server-api/pkg/e"
 	"gin-server-api/pkg/util"
 	"gin-server-api/service/auth_service"

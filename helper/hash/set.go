@@ -2,7 +2,7 @@ package hash
 
 import (
 	"container/list"
-	"gin-server-api/pkg/app"
+	"gin-server-api/app"
 )
 
 type Set struct {
