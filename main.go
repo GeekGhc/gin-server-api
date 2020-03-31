@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	"gin-server-api/helper"
+	"gin-server-api/internal/gredis"
 	"gin-server-api/models"
-	"gin-server-api/pkg/gredis"
 	"gin-server-api/pkg/logger"
 	"gin-server-api/pkg/setting"
-	"gin-server-api/pkg/util"
 	"gin-server-api/routers"
 	"gin-server-api/service/kafka_service"
 	"github.com/gin-gonic/gin"
@@ -20,7 +20,7 @@ func init() {
 	models.Setup()
 	logger.Setup()
 	gredis.Setup()
-	util.Setup()
+	helper.Setup()
 	kafka_service.SetUp()
 }
 

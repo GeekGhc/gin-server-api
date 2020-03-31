@@ -1,7 +1,7 @@
 package app
 
 import (
-	"gin-server-api/pkg/e"
+	"gin-server-api/helper/e"
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"net/http"

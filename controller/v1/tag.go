@@ -2,7 +2,7 @@ package v1
 
 import (
 	"gin-server-api/app"
-	"gin-server-api/pkg/e"
+	"gin-server-api/helper/e"
 	"gin-server-api/service/tag_service"
 	"github.com/gin-gonic/gin"
 	"net/http"

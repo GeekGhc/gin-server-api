@@ -2,8 +2,8 @@ package controller
 
 import (
 	"gin-server-api/app"
-	"gin-server-api/pkg/e"
-	"gin-server-api/pkg/util"
+	"gin-server-api/helper"
+	"gin-server-api/helper/e"
 	"gin-server-api/service/auth_service"
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
@@ -47,7 +47,7 @@ func Auth(c *gin.Context) {
 	}
 
 	//生成token
-	token, err := util.GenerateToken(user)
+	token, err := helper.GenerateToken(user)
 	if err != nil {
 		appG.Response(http.StatusInternalServerError, e.ERROR_AUTH_TOKEN, nil)
 		return

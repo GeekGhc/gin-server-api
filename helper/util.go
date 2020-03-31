@@ -1,6 +1,8 @@
-package util
+package helper
 
-import "gin-server-api/pkg/setting"
+import (
+	"gin-server-api/pkg/setting"
+)
 
 // init the util
 func Setup(){

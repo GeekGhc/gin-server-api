@@ -1,8 +1,8 @@
 package jwt
 
 import (
-	"gin-server-api/pkg/e"
-	"gin-server-api/pkg/util"
+	"gin-server-api/helper"
+	"gin-server-api/helper/e"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -21,7 +21,7 @@ func JWT() gin.HandlerFunc {
 			code = e.INVALID_PARAMS
 		} else {
 			//验证token
-			user, err := util.ParseToken(token)
+			user, err := helper.ParseToken(token)
 			if err != nil {
 				switch err.(*jwt.ValidationError).Errors {
 				case jwt.ValidationErrorExpired:
