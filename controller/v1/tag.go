@@ -2,6 +2,7 @@ package v1
 
 import (
 	"gin-server-api/app"
+	http2 "gin-server-api/app/http"
 	"gin-server-api/helper/e"
 	"gin-server-api/service/tag_service"
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ func GetTags(c *gin.Context) {
 //添加标签
 func AddTag(c *gin.Context) {
 	var (
-		appG = app.Gin{C: c}
+		appG = http2.Gin{C: c}
 		form TagForm
 	)
 	httpCode, errCode := app.BindAndValid(c, &form)

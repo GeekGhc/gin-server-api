@@ -1,7 +1,7 @@
 package helper
 
 import (
-	"gin-server-api/pkg/setting"
+	"gin-server-api/app/setting"
 )
 
 // init the util

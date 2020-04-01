@@ -1,7 +1,7 @@
 package kafka_service
 
 import (
-	"gin-server-api/pkg/setting"
+	"gin-server-api/app/setting"
 	"github.com/Shopify/sarama"
 	"strings"
 )

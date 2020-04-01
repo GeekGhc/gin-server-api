@@ -2,7 +2,7 @@ package logger
 
 import (
 	"fmt"
-	"gin-server-api/pkg/setting"
+	"gin-server-api/app/setting"
 	"time"
 )
 

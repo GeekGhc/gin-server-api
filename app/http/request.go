@@ -1,7 +1,7 @@
-package app
+package http
 
 import (
-	"gin-server-api/pkg/logger"
+	"gin-server-api/internal/logger"
 	"github.com/astaxie/beego/validation"
 )
 

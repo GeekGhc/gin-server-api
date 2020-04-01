@@ -2,7 +2,7 @@ package logger
 
 import (
 	"fmt"
-	"gin-server-api/pkg/file"
+	"gin-server-api/internal/file"
 	"log"
 	"os"
 	"path/filepath"

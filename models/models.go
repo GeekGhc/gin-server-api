@@ -2,7 +2,7 @@ package models
 
 import (
 	"fmt"
-	"gin-server-api/pkg/setting"
+	"gin-server-api/app/setting"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"

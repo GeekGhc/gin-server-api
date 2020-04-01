@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"gin-server-api/app"
+	http2 "gin-server-api/app/http"
 	"gin-server-api/helper"
 	"gin-server-api/helper/e"
 	"gin-server-api/service/auth_service"
@@ -16,7 +16,7 @@ type auth struct {
 }
 
 func Auth(c *gin.Context) {
-	appG := app.Gin{C: c}
+	appG := http2.Gin{C: c}
 
 	valid := validation.Validation{}
 
@@ -28,7 +28,7 @@ func Auth(c *gin.Context) {
 
 	//字段校验
 	if !ok {
-		app.MarkErrors(valid.Errors)
+		http2.MarkErrors(valid.Errors)
 		appG.Response(http.StatusBadRequest, e.INVALID_PARAMS, nil)
 		return
 	}

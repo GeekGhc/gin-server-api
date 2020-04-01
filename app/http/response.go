@@ -1,4 +1,4 @@
-package app
+package http
 
 import (
 	"gin-server-api/helper/e"
