@@ -1,54 +1,29 @@
 package main
 
 import (
-	"fmt"
+	"flag"
 	"gin-server-api/app/setting"
 	"gin-server-api/helper"
 	"gin-server-api/internal/gredis"
-	//"gin-server-api/internal/logger"
+	"gin-server-api/internal/logger"
 	"gin-server-api/models"
-	"gin-server-api/routers"
+	"gin-server-api/server"
 	"gin-server-api/service/kafka_service"
-	"github.com/gin-gonic/gin"
-	"log"
-	"net/http"
-	"time"
 )
 
 func init() {
 	setting.Setup()
 	models.Setup()
-	//logger.Setup()
+	logger.Setup()
 	gredis.Setup()
 	helper.Setup()
 	kafka_service.SetUp()
 }
 
 func main() {
-	gin.SetMode(setting.ServerSetting.RunMode)
-
-	gin.ForceConsoleColor()
-
-	router := routers.InitRouter()
-	readTimeout := setting.ServerSetting.ReadTimeout
-	writeTimeout := setting.ServerSetting.WriteTimeout
-	endPoint := fmt.Sprintf(":%d", setting.ServerSetting.HttpPort)
-	maxHeaderBytes := 1 << 20
-
-	server := &http.Server{
-		Addr:           endPoint,
-		Handler:        router,
-		ReadTimeout:    readTimeout * time.Second,
-		WriteTimeout:   writeTimeout * time.Second,
-		MaxHeaderBytes: maxHeaderBytes,
-	}
-	log.Printf("[info] start http server listening %s", endPoint)
-
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
-	server.ListenAndServe()
+	//应用程序运行环境
+	env := flag.String("env", "dev", "runtime env [dev|pre|prd]")
+	flag.Parse()
+	//启动程序 优雅结束
+	server.NewGracefulServer().Run(*env).Wait()
 }

@@ -11,7 +11,7 @@ const (
 	DevEnvironment Environment = "dev"
 	QaEnvironment  Environment = "qa"
 	PreEnvironment Environment = "pre"
-	PrdEnvironment Environment = "prd"
+	ProEnvironment Environment = "pro"
 )
 
 // 环境的类型定义
@@ -60,7 +60,7 @@ func (e Environment) String() string {
 // 检查全局运行环境是否支持并有效
 func (e Environment) IsValid() bool {
 	switch e {
-	case DevEnvironment, QaEnvironment, PreEnvironment, PrdEnvironment:
+	case DevEnvironment, QaEnvironment, PreEnvironment, ProEnvironment:
 		return true
 	default:
 		return false
@@ -99,5 +99,5 @@ func (e Environment) IsPre() bool {
 
 //检查当前的全局运行环境是否是生产环境
 func (e Environment) IsPro() bool {
-	return e.Is(PrdEnvironment)
+	return e.Is(ProEnvironment)
 }
