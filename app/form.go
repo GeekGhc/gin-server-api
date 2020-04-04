@@ -1,7 +1,6 @@
 package app
 
 import (
-	http2 "gin-server-api/app/http"
 	"gin-server-api/helper/e"
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
@@ -23,7 +22,7 @@ func BindAndValid(c *gin.Context, form interface{}) (int, int) {
 	}
 
 	if !check {
-		http2.MarkErrors(valid.Errors)
+		MarkErrors(valid.Errors)
 		return http.StatusBadRequest, e.INVALID_PARAMS
 	}
 

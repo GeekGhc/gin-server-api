@@ -1,7 +1,7 @@
 package v1
 
 import (
-	http2 "gin-server-api/app/http"
+	"gin-server-api/app"
 	"gin-server-api/helper/e"
 	. "gin-server-api/service/kafka_service"
 	"github.com/gin-gonic/gin"
@@ -10,7 +10,7 @@ import (
 
 //获取用户列表
 func GetUsers(c *gin.Context) {
-	appG := http2.Gin{C: c}
+	appG := app.Gin{C: c}
 
 	//v,exist := c.Get(jwt.AuthUser)
 	//if !exist{
