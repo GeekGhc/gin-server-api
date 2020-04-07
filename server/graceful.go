@@ -5,9 +5,13 @@ import (
 	"fmt"
 	"gin-server-api/app"
 	"gin-server-api/app/setting"
+	"gin-server-api/helper"
+	"gin-server-api/internal/gredis"
 	"gin-server-api/internal/logger"
 	"gin-server-api/middleware"
+	"gin-server-api/models"
 	"gin-server-api/routers"
+	"gin-server-api/service/kafka_service"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"math/rand"
@@ -127,6 +131,17 @@ func (s *GracefulServer) onBoot(env string) {
 	//初始化随机数
 	rand.Seed(time.Now().UnixNano())
 	//初始化环境 日志 配置
+	err := app.InitEnv(env)
+	if err != nil{
+		panic(err.Error())
+	}
+
+	setting.Setup()
+	models.Setup()
+	logger.Setup()
+	gredis.Setup()
+	helper.Setup()
+	kafka_service.SetUp()
 }
 
 // onShutDown 当关闭时执行
