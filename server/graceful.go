@@ -56,8 +56,7 @@ func (s *GracefulServer) Run(env string) *GracefulServer {
 func (s *GracefulServer) listenSign() {
 	//监听退出信号
 	listener := make(chan os.Signal)
-	signal.Notify(listener, syscall.SIGTERM)
-	signal.Notify(listener, syscall.SIGINT)
+	signal.Notify(listener, syscall.SIGTERM, syscall.SIGINT)
 	<-listener
 	//正常退出
 	s.stopping <- true
@@ -132,7 +131,7 @@ func (s *GracefulServer) onBoot(env string) {
 	rand.Seed(time.Now().UnixNano())
 	//初始化环境 日志 配置
 	err := app.InitEnv(env)
-	if err != nil{
+	if err != nil {
 		panic(err.Error())
 	}
 
