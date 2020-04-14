@@ -120,6 +120,7 @@ func (s *GracefulServer) Wait() {
 func (s *GracefulServer) initMiddleware(engine *gin.Engine) {
 	//自定义access panic log日志
 	engine.Use(gin.Logger())
+	engine.Use(middleware.Time())
 	engine.Use(middleware.Recovery())
 	//跨域
 	engine.Use(cors.Default())

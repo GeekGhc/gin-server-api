@@ -1,4 +1,4 @@
-package jwt
+package middleware
 
 import (
 	"gin-server-api/helper"

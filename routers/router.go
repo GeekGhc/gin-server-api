@@ -3,7 +3,7 @@ package routers
 import (
 	"gin-server-api/controller"
 	v1 "gin-server-api/controller/v1"
-	"gin-server-api/middleware/jwt"
+	"gin-server-api/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,7 +18,7 @@ func InitRouter(r *gin.Engine) {
 	})
 
 	apiV1 := r.Group("/api/v1")
-	apiV1.Use(jwt.JWT())
+	apiV1.Use(middleware.JWT())
 	{
 		//获取用户列表
 		apiV1.GET("/users", v1.GetUsers)
