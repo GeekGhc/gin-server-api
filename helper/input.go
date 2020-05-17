@@ -1,5 +1,6 @@
 package helper
 
+import "github.com/gin-gonic/gin"
 
 // GetParam
 func GetParam(ctx *gin.Context, name string, def ...string) string {
